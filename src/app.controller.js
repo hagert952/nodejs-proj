@@ -54,14 +54,14 @@ app.use(rateLimit({
         { "OTP.expiresIn": { $lt: date } },
         { $pull: { OTP: { expiresIn: { $lt: date } } } }
       );
-      console.log("✅ Expired OTPs deleted successfully!");
+
     } catch (error) {
-      console.error("❌ Error deleting expired OTPs:", error);
+  
     }
   };
   
   cron.schedule('0 */6 * * *', () => {
-    console.log("🕒 Running CRON job to delete expired OTPs...");
+  
     deleteExpiredOTPs();
   });
 
