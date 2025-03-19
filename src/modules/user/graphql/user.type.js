@@ -8,11 +8,11 @@ export const userType = new GraphQLObjectType({
     firstName: { type: GraphQLString },
     lastName: { type: GraphQLString },
     email: { type: GraphQLString },
-    password: { type: GraphQLString }, // يجب عدم إظهار كلمة المرور في الاستعلامات
+    password: { type: GraphQLString }, 
     provider: { type: GraphQLString },
     genders: { type: GraphQLString },
     DOB: { type: GraphQLString },
-    mobileNumber: { type: GraphQLString }, // يتم فك التشفير قبل إعادته
+    mobileNumber: { type: GraphQLString },
     role: { type: GraphQLString },
     isConfirmed: { type: GraphQLBoolean },
     deletedAt: { type: GraphQLString},
