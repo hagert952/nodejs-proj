@@ -136,7 +136,7 @@ next(new Error("no image to delte",{cause:404}))
 
       const user = await User.findByIdAndUpdate(
           req.authuser._id,
-          { coverPic: { secure_url: "", public_id: "" } }, // إعادة تعيين الحقول
+          { coverPic: { secure_url: "", public_id: "" } },  
           { new: true }
       );
 
