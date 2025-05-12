@@ -168,7 +168,7 @@ await sendEmail(
 }
 export const resetPassword=async (req, res, next) => {
   try {
-      const { email, otp, rePassword } = req.body;
+      const { email, otp, oldPassword,newPassword } = req.body;
 
       const user = await User.findOne({ email });
       if (!user) {
@@ -186,10 +186,17 @@ export const resetPassword=async (req, res, next) => {
       if (!isMatch) {
           return next(new Error("Invalid OTP", { cause: 400 }));
       }
-
+      
+      // console.log(oldPassword);
+      // console.log(user.password);
+      
+      
+      const ispassword=await bcrypt.compare(oldPassword,user.password)
       // Hash the new password
+      
       // const hashedPassword = await bcrypt.hash(rePassword, 10);
-      user.password = rePassword;
+      if(!ispassword) return next(new Error ('password mismatch',{cause:400}))
+      user.password = newPassword;
 
       // Remove OTP after successful reset
       user.OTP = user.OTP.filter(entry => entry.type !== "forgetPassword");
