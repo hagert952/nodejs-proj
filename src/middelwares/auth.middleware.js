@@ -22,6 +22,8 @@ export const isAuthenticate=async(req,res,next)=>{
      message:"user not found"
     },{new:true})
 
+    if(userExist.bannedAt)
+      throw new Error("your account is banned")
 req.authuser=userExist;
      return next();
 
