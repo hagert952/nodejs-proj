@@ -3,6 +3,9 @@ import cloudinary from "../../utils/cloudinary/cloudinary.config.js";
 import fs from  'fs'
 export const addCompany=async(req,res,next)=>{
 const {companyName,companyEmail,description,industry,address}=  req.body;
+const companyExist=await Company.findOne();
+if(companyExist.companyEmail&&companyExist.companyName)
+    return next(new Error('company email and company name already exists',{cause:400}),)
 await Company.create({companyName:companyName,companyEmail:companyEmail,description:description,
   industry:industry,address:address});
 res.status(201).json({success:true,message:"company add successfully"});
@@ -68,7 +71,12 @@ export const updateCompany = async (req, res, next) => {
                         ,logo,HRs,bannedAt,deletedAt,approvedByAdmin } = req.body;
         const authUser = req.authuser;
         const updateFields = {};
-
+const companyname=await Company.findOne({companyName})
+if(companyname&&companyname.CreatedBy!=authUser._id )
+    return next(new Error("companyName already exists",{cause:404}))
+const companyemail=await Company.findOne({companyEmail})
+if(companyemail&&companyemail.CreatedBy!=authUser._id)
+    return next(new Error("companyEmail already exists",{cause:404}))
         if (req.files.coverPic) {
             const coverPicPath = req.files.coverPic[0].path;
             const coverPublicId = `social-app/company/${authUser._id}/Cover-pic`;
@@ -117,7 +125,6 @@ export const updateCompany = async (req, res, next) => {
         if (!updatedCompany) {
             return res.status(404).json({ success: false, message: "Company not found" });
         }
-
         return res.status(200).json({ success: true, data: updatedCompany });
   
 };
