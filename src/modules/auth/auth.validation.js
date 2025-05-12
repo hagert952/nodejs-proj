@@ -23,6 +23,7 @@ export const resetPassword=joi.object({
     email:joi.string().required()
     ,otp:joi.string().required()
      ,newPassword:joi.string().required()
+     ,oldPassword:joi.string().required()
 }).required()
 export const refreshToken=joi.object({
     refreshToken:joi.string().required()
