@@ -10,15 +10,13 @@ import { roles } from "../../db/model/enums/user.enums.js";
 
 const router = Router({ mergeParams: true });
 router.post('/',isAuthenticate,isValid(jobValidation.addJob),asyncHandler(jobService.addJob))
-router.patch('/:jobId',isAuthenticate,isAuthorized(roles.OWNER)
+router.patch('/:jobId',isAuthenticate,isAuthorized(roles.JOBOWNER)
 ,asyncHandler(jobService.updateJob))
-
-router.delete('/:jobId',isAuthenticate,asyncHandler(jobService.deleteJob
-))
+router.delete('/:jobId',isAuthenticate,asyncHandler(jobService.deleteJob))
 router.get("/jobs/:companyId/:jobId?",asyncHandler(jobService.getcompjob))
 router.get("/getJobs",asyncHandler(jobService.getJobs))
 router.get("/users",isAuthenticate,isAuthorized(roles.USER),asyncHandler(jobService.allOrOne))
 router.get("/:jobId/applications",asyncHandler(jobService.applicationsForJob))
-router.post("/:jobId/apply", isAuthenticate,asyncHandler(jobService.applyToJob))
+router.post("/:jobId/apply",isAuthorized(roles.USER), isAuthenticate,asyncHandler(jobService.applyToJob))
 router.patch("/:applicationId/status",  asyncHandler(jobService.rejectAccept))
 export default router;
