@@ -4,7 +4,7 @@ import { Company } from "../../db/model/company.js";
 import { JobOpportunity } from "../../db/model/jobOpportunity.js";
 import { sendEmail } from "../../utils/email/send-email.js";
 
-export const addJob= async (req, res) => {
+export const addJob= async (req, res,next) => {
 
     const { jobTitle, jobLocation, workingTime, seniorityLevel, jobDescription, technicalSkills, softSkills, companyId } = req.body;
     const userId = req.authuser._id; 
@@ -14,7 +14,8 @@ export const addJob= async (req, res) => {
     if (!company) {
       return res.status(404).json({ message: "Company not found" });
     }
-
+if(company.approvedByAdmin==false)
+  return next(new Error("company not approved",{cause:400}))
     // Check if the user is the company owner or HR
     // const isOwner = company.CreatedBy.toString() === userId.toString();
     // const isHR = company.HRs.some((hrId) => hrId.toString() === userId.toString());
