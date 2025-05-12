@@ -61,11 +61,9 @@ if(company.approvedByAdmin==false)
           return next(new Error("Company not found",{cause:404}))
         }
 
-        // Check if the authenticated user is an HR of the company
         const isHR = company.HRs.some(hrId => hrId.toString() == userId.toString());
-      
+      if(!isHR)return next(new Error ("hr only can delete",{cause:400}))
 
-        // If the user is an HR of the company, delete the job
         const deletedJob = await JobOpportunity.findByIdAndDelete(jobId);
 
         res.status(200).json({ message: "Job deleted successfully", job: deletedJob });
