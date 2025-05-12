@@ -120,11 +120,12 @@ return {approveCompany: {
     const company = await Company.findById(args.id);
     if (!company) throw new Error("Company not found");
 
-    // Approve the company
-    company.approvedAt = new Date();
+ 
+
+    company.approvedByAdmin =true;
     await company.save();
 
-    return company.approvedAt !== null; // true if approved
+    return company.approvedByAdmin =true; 
   },
 },
 }}
